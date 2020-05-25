@@ -14,7 +14,7 @@ require("GGally")
 
 install.packages("COVID19")
 require("COVID19")
-#####################################################################
+######################################################################
 
 
 #ISO     |	vector of ISO codes to retrieve (alpha-2, alpha-3 or numeric). Each country is identified by one of its ISO codes
