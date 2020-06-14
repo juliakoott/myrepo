@@ -7,6 +7,7 @@ source('Predykcja.R')
 library(shinydashboard)
 library(leaflet)
 require("GGally")
+source('testy.R')
 #require("data sets")
 
 paragraphText = 'Powyżej mapa przedstawiająca aktualną liczbę  skumulowanych przypadków zachorowań na Covid-19'
@@ -16,7 +17,8 @@ sidebarUI <- dashboardSidebar(
   
   sidebarMenu(
     menuItem("Mapa", tabName = "Mapa", icon = icon("globe-africa")),
-    menuItem("Analiza", tabName = "Analiza", icon = icon("chart-bar")),
+    menuItem("Polska", tabName = "Polska", icon = icon("chart-bar")),
+    menuItem("Swiat", tabName = "Swiat", icon = icon("atlas")),
     menuItem("Predykcja", tabName = "Predykcja", icon = icon("chart-line")),
     menuItem("Potwór spagetti", tabName = "Kitku", icon = icon("pastafarianism")),
     menuItem("Informacje", tabName = "Informacje", icon = icon("thumbtack")),
@@ -47,28 +49,41 @@ dashboardUI <- dashboardBody(
               
             )
     ),
-    tabItem (tabName="Analiza",
+    tabItem(tabName = "Swiat",
+            fluidRow(
+              titlePanel(title="Analiza aktualnych danych dla Świata"),
+              sidebarPanel(
+               selectInput(inputId = "Kraj",
+                           label = "Wybierz kraj",
+                           choices = unique(coronavirus$Country.Region),
+                           selected = "Germany")
+               )
+              )
+            ),
+    tabItem (tabName="Polska",
              fluidRow(
-             titlePanel(title="Analiza aktualnych danych"),
+             titlePanel(title="Analiza aktualnych danych dla Polski"),
              tabBox(
-               tabPanel("Analiza 1",selectInput(inputId = "Kraj",
-                                      label = "Wybierz kraj",
-                                      choices = unique(coronavirus$Country.Region),
-                                      selected = "Poland"),
+               tabPanel("Analiza danych",
                         p("Wybierz rodzaj danych: "),
                         checkboxInput("confirmed", "Potwierdzone przypadki", FALSE),
                         checkboxInput("death", "Zmarli", FALSE),
                         checkboxInput("recovered", "Ozdrowiali", FALSE),
-                        #checkboxInput("Daily.change.in.total.tests", "Ilość testów", FALSE),
-                        plotOutput('ploty')
-                        
-                        
-                        ),
-               tabPanel("Analiza 2"),
+                        checkboxInput("testy", "Ilość testów", FALSE),
+                        plotOutput('ploty'),
+                      ),
+               tabPanel("Ilości na dzień",
+               p("Wybierz rodzaj danych: "),
+               checkboxInput("confirmedD", "Potwierdzone przypadki", FALSE),
+               checkboxInput("deathD", "Zmarli", FALSE),
+               checkboxInput("recoveredD", "Ozdrowiali", FALSE),
+               checkboxInput("testyD", "Ilość testów", FALSE),
+               plotOutput('plotyDzien')),
+               
                tabPanel("Analiza 3"))
-             
-             
              )
+             
+             
             
     ),
     tabItem(tabName = "Predykcja",
