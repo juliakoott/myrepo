@@ -1,0 +1,284 @@
+/* 
+kolor paska bocznego: rgba(34, 45, 50, 0.671);
+
+*/
+
+
+
+
+/* .main-sidebar, .sidebar {
+    background-color: rgba(220, 245, 222, 0.788);
+    font-weight: bold;
+    
+} */
+
+
+
+/* body {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Helvetica, sans-serif;
+    font-size: 15px;
+    //font-family: Verdana, Geneva, Tahoma, sans-serif;
+} */
+
+
+/* .content {
+    padding: 0px;
+    margin: 0px;
+} */
+
+
+/* .tab-pane .row {
+    margin: 10px;
+    padding: 20px;
+} */
+
+
+
+
+/* ================================================================== */
+/*                          SHINY  MENU BOCZNE                        */
+/* ================================================================== */
+
+.sidebar-menu .active {
+    /* background: rgb(67, 87, 97); */
+    z-index: 2000;
+    background-color: yellow;
+    color: teal;
+}
+
+.sidebar-menu .active span {
+    /* background: rgb(67, 87, 97); */
+    z-index: 1000;
+    /* background-color: yellow; */
+    color: teal;
+}
+
+
+
+/* ================================================================== */
+/*                             MAPA LEAFLET                           */
+/* ================================================================== */
+
+#covMap {
+    margin: -15px -10px -10px 0px;
+}
+
+
+
+/* ================================================================== */
+/*        ETYKIETY DOLACZONE DO KÓŁ Z DANYMI (CircleMarkers)          */
+/* ================================================================== */
+
+.mapLabel {
+    color: #2f94b0;
+    /* color: brown; */
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    background: rgba(255,255,255,0.8);
+    border-radius: 1px;
+    /* font-size: 20px; */
+}
+
+/* .mapLabel p  */
+
+
+/* ================================================================== */
+/*              WSZYSTKO CO JEST W RAMCE Z SUWAKAMI DO MAPY           */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+#on_map_box1 {  
+    /* opcja nr 1 */
+    z-index: 800;
+    padding: 30px;
+    /* kolor paska bocznego: rgba(34, 45, 50, 0.671); */
+    /* background-color: rgba(8, 36, 49, 0.671);  */
+    background-color: rgba(255, 255, 255, 0.8); 
+    box-shadow: 0.2em 0.2em 1em rgba(0, 0, 0, 0.7);
+    color: white;
+    text-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.76);
+    border: none;
+    /* min-width: 40px; */
+    width: 320px;
+}
+
+#on_map_box { 
+    z-index: 800;
+    padding: 20px;
+    margin: 10px 0px 0px 10px;
+    font-size: 1.2rem;
+    /* left: 0px;  top: 0px;    position: absolute;  https://www.w3schools.com/cssref/tryit.asp?filename=trycss_position_relative */
+    /* kolor paska bocznego: rgba(34, 45, 50, 0.671); */
+    /* background-color: rgba(8, 36, 49, 0.671);  */
+    background-color: rgba(255, 255, 255, 0.7); 
+    box-shadow: 0.1em 0.1em 0.4em rgba(0, 0, 0, 0.4);
+    color: rgb(34, 45, 50);
+    /* text-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.76); */
+    border: none;
+    /* min-width: 40px; */
+    width: 320px;
+    border-radius: 0px;
+}
+
+
+
+#on_map_box #mapText_info{
+    /* font-family: Arial, Helvetica, sans-serif; */
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Helvetica, sans-serif;
+    padding-bottom: 2em;
+    font-style: italic;
+    /* text-align: justify; */
+    height: 4em;
+    /* padding: 0px 0 200px 0; */
+
+} 
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+/* ------------------------------------------- */
+/*          selectInput - wybor danych         */
+/* ------------------------------------------- */
+
+#chosenDataType  div div{
+    background-color: blue;
+}
+
+.selectize-input {
+    background: yellow;
+}
+
+.selectize-input.full,
+.selectize-input,
+.selectize-dropdown-content,
+.selectize-input.dropdown-active,
+.selectize-control.single .item{
+    background: none;
+}
+
+.selectize-control.single .selectize-input.input-active, 
+.selectize-dropdown.single,
+.selectize-control.single input{
+    background-color: rgba(255, 255, 255, 0.75); 
+    box-shadow: 0.1em 0.1em 0.2em rgba(0, 0, 0, 0.4);
+}
+
+.option.selected.active, .option.active  {
+    color: teal;
+    /* background: rgba(19, 149, 255, 0.1); */
+    background: none;
+}
+
+
+
+/* ------------------------------------------- */
+/*            sliderInput -- SUWAK             */
+/* ------------------------------------------- */
+
+/*  sliderInput :: pasek/suwak     (ta część horyzontalna ) */
+.irs-bar, .irs-bar-edge {
+    background: rgba(34, 45, 50, 0.9);
+
+}
+
+
+/*  sliderInput :: guzik  */
+
+.irs-slider { /* guzik nieaktywny */
+    background-color: rgba(211, 211, 211, 0.9);
+}
+
+.irs-active-slider, .irs-slider:hover { /* guzik aktywny  */
+    /* background-color: rgba(0, 128, 128, 0.685); */
+    background-color: rgba(255, 255, 255, 0.8);
+    /* background: rgba(0, 77, 128, 0.9); */
+
+}
+
+.irs-slider.single.state_hover { /* guzik przesuwany */
+    /* background: rgba(77, 158, 212, 0.7); */
+    /* background: rgba(55, 116, 156, 0.9); */
+    background-color: rgba(255, 255, 255, 0.8);
+    /* background: rgba(0, 128, 128, 0.7); */
+    
+}
+
+
+
+/* ================================================================== */
+/*                             ZOOM LEAFLET                           */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+/* nieaktywny przycisk ZOOM*/
+a.leaflet-control-zoom-in, a.leaflet-control-zoom-out {
+    background: none; 
+    /* border: none; */
+    border-radius: 0px;
+}
+
+/* aktywny przycisk ZOOM*/
+.leaflet-touch .leaflet-bar a:hover {
+    background: rgba(255, 255, 255, 0.9); 
+    /* background: rgba(0, 128, 128, 0.3); */
+}
+
+/* .leaflet-touch .leaflet-bar a { */
+    /* border: none; */
+    /* background: rgba(255, 255, 255, 0.9);  */
+    /* background: rgba(0, 128, 128, 0.3); */
+/* } */
+
+/* tło przycisku ZOOM (cały kontener)*/
+.leaflet-control-zoom.leaflet-bar.leaflet-control {
+    background: rgba(255, 255, 255, 0.7); 
+    /* background: rgba(175, 37, 37, 0.7);  */
+    box-shadow: 0.1em 0.1em 0.4em rgba(0, 0, 0, 0.4);
+    border: black;
+    border-width: 3px;
+    border-radius: 0em;
+    position: fixed; right: 10px; bottom: 25px;
+    margin: 20px 20px;
+}
+
+/* =========================================== */
+
+/* ================================================================== */
+/*                             ETYKIETA Z NAZWA DOSTAWCY MAPY,                           */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+/* .leaflet-bottom.leaflet-right {
+    position: absolute; right: 0px; bottom: 0px;
+} */
+
+ /* etykieta opisujaca dostawce mapy etc */
+.leaflet-control-attribution.leaflet-control {
+    position: fixed; right: 0px; bottom: 0px;
+    background: rgba(255, 255, 255, 0.6);
+    /* background: rgba(190, 139, 29, 0.6); */
+}
+
+
+
+
+
+
+/*  */
+/* .selectize-input, .selectize-input.full, .selectize-input.input-active, .selectize-dropdown.single {
+    background-color: yellow;
+} */
+
+/* .selectize-input{
+    background-color: yellow;
+}
+
+#chosenDataType{
+    background-color: blue;
+}
+
+
+
+.selectize-control div{
+    background-color: blue;
+}
+
+.selectize-control .item{
+    background-color: blue;
+} */

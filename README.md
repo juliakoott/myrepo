@@ -1,8 +1,9 @@
 # myrepo
 ## Gałąź: covid19-maps
 
-Zawiera pliki:
-+ covid-maps.R - plik głównie zawierający funkcje
+### Zawiera pliki:
++ serwer.R, ui.R - demonstracja działania mapy
++ mapsFiles/covid-maps.R - plik głównie zawierający funkcje
 	+ addActiveCases() - *podfunkcja  funkcji dynamicMapElements()* <br>
 	oblicza aktywne przypadki na podstawie kolumn confirmed, recovered i deaths
 	
@@ -11,5 +12,14 @@ Zawiera pliki:
 	+ initializeWorldMap() - inicjalizuje warstwę mapy
 	
 	+ dynamicMapElements() - wyciaga dane z pomocą pakietu COVID19 i tworzy potrzebne dane do mapy z 
-	
-+ app - demonstracja działania mapy
++ mapsFiles/countryiesPl.rds - plik ze spolszczeniem nazw państw
++ www/mapStyles.css - plik css ze stylami elementow mapy
+
+
+#### 31.08.2020  Co zmieniono/ dodano:
++ Dodano dane sumaryczne przypadków Covid-19, aktualne przypadki i śmierci 
++ Dodano spolszczenie nazw państw
++ Zmieniono normalizacje na 1mln polpulacji danego kraju
++ Poprawiono lokalizację niektórych markerów kołowych
++ Zmieniono położenie przycisków sterujących mapą
+
