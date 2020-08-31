@@ -50,7 +50,7 @@ dashboardUI = dashboardBody(
                         value = Sys.Date() - 1,
                         timeFormat="%Y-%m-%d"),
                     p(textOutput(outputId = 'mapText_chosenDate')),
-                    selectInput(inputId = "chosenDataType", label = "Wybierz dane", choices = c("kumulatywne","aktywne", "śmierci"))
+                    selectInput(inputId = "chosenDataType", label = "Wybierz dane", choices = c("kumulatywne","aktywne", "zgony"))
                 )
             # )
         )), 

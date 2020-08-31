@@ -48,8 +48,17 @@ server <- function(input, output, session) {
                 mapText_info = "Aktualna mapa obrazująca sumaryczną liczbę przypadków zachorowań na Covid-19"
             })
             
-        }else if (input$chosenDataType == "śmierci"){
-            const1 = 6
+        }else if (input$chosenDataType == "aktywne"){
+           const1 = 1
+           dynamicElements$chosen_data2map = sqrt(const1*dynamicElements$data2map$activeRadius^2)
+           dynamicElements$mapDesignOpts$color = "#00b3b3" # #009999
+           
+           output$mapText_info <- renderText({
+              mapText_info = "Aktualna mapa obrazująca sumaryczną liczbę aktywnych przypadków"
+           })
+            
+        }else if (input$chosenDataType == "zgony"){
+            const1 = 5
             dynamicElements$chosen_data2map = sqrt(const1*dynamicElements$data2map$deathsRadius^2)
             # dynamicElements$mapDesignOpts$color = "#9933ff"
             dynamicElements$mapDesignOpts$color = "#400080"
@@ -57,17 +66,6 @@ server <- function(input, output, session) {
             output$mapText_info <- renderText({
                 mapText_info = "Aktualna mapa obrazująca sumaryczną liczbę zgonów wywołanych Covid-19"
             })
-            
-            
-        }else if (input$chosenDataType == "aktywne"){
-            const1 = 6
-            dynamicElements$chosen_data2map = sqrt(const1*dynamicElements$data2map$deathsRadius^2)
-            dynamicElements$mapDesignOpts$color = "#00b3b3" # #009999
-            
-            output$mapText_info <- renderText({
-                mapText_info = "Aktualna mapa obrazująca sumaryczną liczbę aktywnych przypadków"
-            })
-            
         }
         
         return(dynamicElements)
