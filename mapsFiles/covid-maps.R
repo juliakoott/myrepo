@@ -62,9 +62,9 @@ addActiveCases <- function(DataFrame2map) {
 
 
 
-computeRadius <- function(data2map_norm, radius1000 = 500,
-                          cols2radius = c('tests', 'confirmed',
-                                          'recovered', 'active', 'deaths')
+computeRadius <- function(
+   data2map_norm, radius1000 = 500, 
+   cols2radius = c('tests', 'confirmed', 'recovered', 'active', 'deaths')
 )
 {
     # Używane w funkcji dynamicMapElements()
@@ -125,6 +125,9 @@ initializeWorldMap = function(){
 
 
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#           ----  ELEMENTY DYNAMICZNE MAPY     ----
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 dynamicMapElements <- function(chosendate) {
     
     
@@ -209,7 +212,7 @@ dynamicMapElements <- function(chosendate) {
     
     
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    #          Przeskalowanie na wartosci promienia
+    #        ----  Przeskalowanie wartosci  na promien  ----
     # (pole powierzchnii proporcjonalne do liczby przypadkow)
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # cols2radius = c('tests', 'confirmed', 'recovered', 'active', 'deaths')
@@ -219,7 +222,7 @@ dynamicMapElements <- function(chosendate) {
     
     
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    #            ----  STWORZENIE ETYKIET     ----
+    #            ----  Stworzenie etykiet     ----
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Etykiety sa elementem dynamicznym zależnym od chosendate
     
