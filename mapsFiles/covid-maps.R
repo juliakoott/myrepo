@@ -41,7 +41,7 @@ library("V8") # do leaflet.providers
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#       ----   MAPY FUNKCJE NIZSZYCH STOPNI  ----
+#       ----   MAPY FUNKCJE NISKOPOZIOMOWE  ----
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -85,6 +85,36 @@ computeRadius <- function(
     return(data2map_norm_radius)
 }
 
+readPolishPolygons <- function() {
+  polishPolygons = readRDS(file = "mapsFiles/poland_geojson.rds")
+  polishPolygons@polygons
+  assign(x = ".map_polishPolygons",  value = polishPolygons, envir = .GlobalEnv)
+}
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#       ----   MAPY FUNKCJE WYSOKOPOZIOMOWE  ----
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+initializeConstantMapsObjects <- function() {
+  ## Stworzenie stalych obiektow takich jak poligony, palety, etc
+  readPolishPolygons()
+  
+  ## Stworzenie palety
+  ## paleta pomarancze:"#ffffcc","#ffcc99","#ff9966","#ff6600","#990033"
+  ## paleta fiolety:"#ccccff","#9999ff","#9966ff","#6600ff","#6600cc"
+  # #ffffcc #ffcc00 #ff9933 #ff3300 #990000
+  # c("#ccccff","#9999ff","#9966ff","#6600ff","#6600cc")
+	map_Palette = colorBin(
+		# c("#ffffff","#e6e6ff", "#ccb3ff", "#6600ff","#3333cc", "#191966","#0f0f3d"),
+		c("#ffffff","#e6fcff", "#99f3ff", "#4deaff","#00cbe6", "#008799","#002d33"),
+		# c("#ffffff","#e6f7ff", "#99ddff", "#4dc3ff","#0099e6", "#006699","#00334d"),
+		domain = NULL, bins = c(.0, 10, 25.0, 50.0, 100.0, 250.0, 1000.0, 10^6)
+	)
+	
+  assign(".map_Palette", value = map_Palette, envir = .GlobalEnv)
+} 
+
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #       ----   STWORZENIE MAPY covid-19  ----
@@ -96,6 +126,8 @@ computeRadius <- function(
 # + liczby zgonow
 # 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -123,18 +155,35 @@ initializeWorldMap = function(){
     return(map)
 }
 
+# Mapa Polski
+initializePolandMap = function(){
+    
+    # Stworzenie obiektu leaflet i ustawienie opcji minimalnego i maksymalnego powiększenia
+    map <- leaflet()
+      # options = leafletOptions(minZoom = 6, maxZoom = 8)
+    
+    # Ustawienie widoku początkowego mapy: (22.5, 53)
+    map <- setView(map, lng = 19.5, lat = 52, zoom = 7, options = leafletOptions(minZoom = 6, maxZoom = 8)) %>%
+      setMaxBounds(lng1 = 8, lng2 = 32, lat1 = 42, lat2 = 56)  %>%
+      addProviderTiles(provider = 'CartoDB.Voyager') # %>% # Dodanie dostawcy mapy innego niz domyslny
+      
+
+    return(map)
+}
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #           ----  ELEMENTY DYNAMICZNE MAPY     ----
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-dynamicMapElements <- function(chosendate) {
+dynamicMapElements <- function(chosendate, dataType="world") {
+  
+  
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  #       ----      WD :: EKSTRAKCJA DANYCH covid-19  ----
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  if (dataType=="world") {
     
-    
-    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    #       ----   EKSTRAKCJA DANYCH covid-19  ----
-    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+  
     covnat.chosen = covid19(start = chosendate, end = chosendate, cache = TRUE)
     
     # Wyczyszczenie Danych
@@ -145,7 +194,7 @@ dynamicMapElements <- function(chosendate) {
     
     
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    #           ---- Poprawki Danych Do Mapy ----
+    #           ---- WD :: Poprawki Danych Do Mapy ----
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     # 1. Poprawienie koordynat Danii
@@ -153,13 +202,13 @@ dynamicMapElements <- function(chosendate) {
     covnat.chosen[toImprove_idx, c('latitude', 'longitude')] = t(as.matrix(c(55.6, 10.32)))
     
     # 2. POPRAWIENIE NAZW PANSTW NA POLSKIE
-    # !z pliku countryiesPl.rds została usunięta Palestyna i statki wycieczkowe (tez sa w danych)
+    # !z pliku countriesPl.rds została usunięta Palestyna i statki wycieczkowe (tez sa w danych)
     # z powodu braku wspolrzednych geograficznych!
     
     # Wczytanie pliku konfiguracyjnego z polskimi nazwami panst
     # poki co nazwy z angielskich sa zmieniane na polskie przy kazdyej 
     if (!exists("countries_pl.config", envir = .GlobalEnv)) {
-        countries_pl.config = readRDS(file='mapsFiles/countryiesPl.rds')
+        countries_pl.config = readRDS(file = 'mapsFiles/countriesPl.rds') # 
         assign('countries_pl.config', countries_pl.config, envir = .GlobalEnv)
         
     } else{
@@ -180,7 +229,7 @@ dynamicMapElements <- function(chosendate) {
             is_countryies_PL = T
         }
     }
-
+  
     if (!is_countryies_PL) {
         warning("nieudana proba zmiany nazw panstw na polskie!")
         # Trzebaby dodac dopasowanie kodow iso3 pom danymi i ramka dnych z pliku
@@ -188,13 +237,12 @@ dynamicMapElements <- function(chosendate) {
         # danych z pakietu COVID19 zmieni sie liczba panstw dalo sie nadal zmienic
         # nazwy na polskie
     }
-
+  
     
     
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     #       DODANIE KOLUMNY AKTYWNYCH PRZYPADKOW
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
     data2map = addActiveCases(covnat.chosen)
     data2map[data2map$active < 0, "active"] = 0
     
@@ -202,14 +250,10 @@ dynamicMapElements <- function(chosendate) {
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     #       NORMALIZACJA WZGLEDEM POLULACJI na 1mln
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
-    cols2norm = c('tests', 'confirmed', 'recovered', 'active', 'deaths')
-    
+    cols2norm = c('tests', 'confirmed', 'recovered', 'active', 'deaths')  # KOLUMNY DLA SWIATA
     data2map_norm = data2map
     data2map_norm[, cols2norm] = (data2map[, cols2norm] / covnat.chosen$population) * 10^6 
-    data2map$population = covnat.chosen$population
-    
-    
+    # data2map$population = covnat.chosen$population  # TODO: POPRAWIC
     
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     #        ----  Przeskalowanie wartosci  na promien  ----
@@ -218,7 +262,7 @@ dynamicMapElements <- function(chosendate) {
     # cols2radius = c('tests', 'confirmed', 'recovered', 'active', 'deaths')
     
     data2map_norm_radius = computeRadius(data2map_norm, radius1000 = 250)
-    # data2map_norm_radius$confirmedRadius[data2map_norm_radius$id == 'USA']
+    # data2map_norm_radius nie ma juz wartosci 
     
     
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -230,12 +274,12 @@ dynamicMapElements <- function(chosendate) {
     formatStr = '<b>%s</b> <div>Sumarycznie na 1mln: %.1f<br/>Aktywne na 1mln: %.1f<br/>Zgony na 1mln: %.1f <br/><span id="labPopul">Populacja %.3f mln</span></div>'
     
     labels2map = sprintf(
-        fmt = formatStr,
-        data2map_norm$administrative_area_level_1,
-        data2map_norm$confirmed,
-        data2map_norm$active,
-        data2map_norm$deaths,
-        round((data2map$population/10^6),3)
+      fmt = formatStr,
+      data2map_norm$administrative_area_level_1,
+      data2map_norm$confirmed,
+      data2map_norm$active,
+      data2map_norm$deaths,
+      round((data2map$population/10^6),3)
     )
     
     # Przekszatalcenie etykiet na klase HTML (oznaczenie tekstu jako HTML)
@@ -245,10 +289,71 @@ dynamicMapElements <- function(chosendate) {
     dynamicElements$HTML_labels = HTML_labels2map
     dynamicElements$data2map = data2map_norm_radius
     dynamicElements$mapDesignOpts = list(
-        color =  '#00b3b3',  weight = 1.2
+      color =  '#00b3b3',  weight = 1.2
     )
     
-    return(dynamicElements)
+  }else if (dataType == "poland") {
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #                   ---- POLSKA ----
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # TODO: DODAĆ DANE POLSKIE
+    # covnat.chosen = covid19PL(chosen.date)
+    covnat.chosen = covid19PL(chosendate)
+    
+    ## TODO: posprzatac tutaj
+    idx123 = !(covnat.chosen$voivodeship %in% c("dzienne", "cumulatywnie"))
+    covnat.chosen = covnat.chosen[idx123, ]
+    
+    data2map = covnat.chosen # TODO: do podmienienia !
+    
+    
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #       NORMALIZACJA WZGLEDEM POLULACJI na 1mln
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    cols2norm = c('confirmed', 'deaths')  # KOLUMNY DLA POLSKI
+    
+    data2map_norm = data2map
+    data2map_norm[, cols2norm] = (data2map[, cols2norm] / covnat.chosen$population) * 10^6 
+    data2map$population = covnat.chosen$population
+    
+    
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #        ----  Przeskalowanie wartosci  na promien  ----
+    # (pole powierzchnii proporcjonalne do liczby przypadkow)
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    data2map_norm_radius = computeRadius(data2map_norm, radius1000 = 1000, cols2radius = c('confirmed'))
+    # data2map_norm_radius nie zaiera tutaj juz column deaths i  confirmed tylko  deathsRadius i  confirmed (sic!)
+    
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #            ----  Stworzenie etykiet     ----
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Etykiety sa elementem dynamicznym zależnym od chosendate
+    
+    # formatStr = '<b>%s</b> <div>Confirmed na 1mln: %.1f<br/>Active na 1mln: %.1f<br/>Deaths na 1mln: %.1f <br/><span id="labPopul">Population %.3f mln</span></div>'
+    formatStr = '<b>%s</b> <div>Przypadki: %d<br/>Zgony: %d<br/>Sumarycznie na 1mln: %.1f<br/>Zgony na 1mln: %.1f <br/><span id="labPopul">Populacja %.1f mln</span></div>'
+    
+    labels2map = sprintf(
+      fmt = formatStr,
+      data2map_norm$voivodeship,
+      data2map$confirmed,
+      data2map$deaths,
+      data2map_norm$confirmed,
+      data2map_norm$deaths,
+      round((data2map$population/10^6),3) # TODO: ZOBACZ TO RANO
+    )
+    
+    # Przekszatalcenie etykiet na klase HTML (oznaczenie tekstu jako HTML)
+    HTML_labels2map = lapply(X = labels2map, htmltools::HTML)
+    
+    dynamicElements = list()
+    dynamicElements$HTML_labels = HTML_labels2map
+    dynamicElements$data2map = data2map_norm_radius
+    dynamicElements$mapDesignOpts = list(
+      color =  '#00b3b3',  weight = 1.2
+    )
+  }
+  
+  return(dynamicElements)
 }
 
 # LITERATURA
