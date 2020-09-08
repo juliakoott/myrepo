@@ -23,3 +23,7 @@
 + Poprawiono lokalizację niektórych markerów kołowych
 + Zmieniono położenie przycisków sterujących mapą
 
+
+#### 08.09.2020  Co zmieniono/ dodano:
+Dodano mape Polski z danymi przypadków i zgonów w województwach i potrzebne do niej dane i funckje
++ Pobieranie
