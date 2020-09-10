@@ -198,6 +198,14 @@ dashboardUI = dashboardBody(
     # ===== PREDYKCJA PL =====
     tabItem(tabName = "Predykcja",
     				fluidRow(
+    					infoBox("DZIEŃ 1", p1, icon = icon("calendar-alt"),color = "purple", width = 2),
+    								 infoBox("DZIEŃ 2", p2, icon = icon("calendar-alt"),color = "purple", width = 2),
+    								 infoBox("DZIEŃ 3", p3, icon = icon("calendar-alt"),color = "purple", width = 2),
+    								 infoBox("DZIEŃ 4", p4, icon = icon("calendar-alt"),color = "purple", width = 2),
+    								 infoBox("DZIEŃ 5", p5, icon = icon("calendar-alt"),color = "purple", width = 2),
+    					infoBox("DZIEŃ 6", p6, icon = icon("calendar-alt"),color = "purple", width = 2)
+    								 ),
+    				fluidRow(
     					box(tags$h3("Predykcja nowych przypadków w Polsce na podstawie aktualnych danych (model liniowy):"),
     							plotOutput('pred1'), width=100,
     							tags$h4('Numer dnia od początku pandemii'))

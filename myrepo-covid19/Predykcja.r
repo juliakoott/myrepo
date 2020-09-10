@@ -99,7 +99,7 @@ ggplot(data = covid_PL, aes(x = date, y = confirmed)) +
 
 predykcja = data.frame(predict(model, covid_PL))
 
-predykcja = predict(model,newdata = data.frame(date = c(64,65,66,67,68,69,70,71)))
+predykcja = predict(model,newdata = data.frame(date = c((nrow(covid_PL_dates) + 1),(nrow(covid_PL_dates) + 2),(nrow(covid_PL_dates) + 3),(nrow(covid_PL_dates) + 4),(nrow(covid_PL_dates) + 5))))
 
 
 #######
@@ -114,7 +114,7 @@ predykcja = predict(model,newdata = data.frame(date = c(64,65,66,67,68,69,70,71)
 #http://www.sthda.com/english/articles/40-regression-analysis/162-nonlinear-regression-essentials-in-r-polynomial-and-spline-regression-models/
 
 # Build the model
-model2 <- lm(confirmed ~ poly(date, 5, raw = TRUE), data = covid_PL)
+model2 <- lm(confirmed ~ poly(date,5 , raw = TRUE), data = covid_PL)
 # Make predictions
 predykcja2 <- predict(model2)
 
@@ -122,5 +122,11 @@ plot(covid_PL$date,predict(model2),type='l',col='blue')
 lines(covid_PL$date,predict(model),col='red')
 points(covid_PL$date,covid_PL$confirmed)
 
-predykcja2 = predict(model2,newdata = data.frame(date = c(64,65,66,67,68,69,70,71)))
+predykcja2 = predict(model2,newdata = data.frame(date = c((nrow(covid_PL_dates) + 1),(nrow(covid_PL_dates) + 2),(nrow(covid_PL_dates) + 3),(nrow(covid_PL_dates) + 4),(nrow(covid_PL_dates) + 5),(nrow(covid_PL_dates) + 6))))
+p1=as.numeric( floor(predykcja2[1]))
+p2=as.numeric( floor(predykcja2[2]))
+p3=as.numeric( floor(predykcja2[3]))
+p4=as.numeric( floor(predykcja2[4]))
+p5=as.numeric( floor(predykcja2[5]))
+p6=as.numeric( floor(predykcja2[6]))
 
