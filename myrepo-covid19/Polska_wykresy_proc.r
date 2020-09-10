@@ -1,7 +1,6 @@
 library(COVID19)
 library(plotly)
 
- ## procent pozytywnych wynik?w test?w
 y1=m$tests
 n1=c()
 for( i in 1:length(y1)){
