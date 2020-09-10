@@ -13,12 +13,7 @@ figz <- figz %>% layout(
   title = " Ogólna liczba zgonów spowodowanych chorob covid19 na przestrzeni dni",
     xaxis = list(type = 'date',title = "Data"),
     yaxis = list(title = 'Liczba zgonów'))
-######################################################zgony cakowite pl
-#navy 	#000080
-#purple 	#800080
-#maroon 	#800000
 
-#dzienne dane
 y=m$deaths
 n=c()
 for( i in 1:length(y)){
@@ -41,9 +36,9 @@ figz1 <- plot_ly(
 figz1 <- figz1 %>% layout(
   title = "Liczba zgonów spowodowanych chorob covid19 na przestrzeni dni",
   xaxis = list(type = 'date',title = "Data"),
-  yaxis = list(title = 'Liczba zgonów'))# dziennie zgony PL
+  yaxis = list(title = 'Liczba zgonów'))
 
-##liczba test?w 
+
 d<-covid19()
 m=d[which(d$id=="POL"),]
 figt <- plot_ly(
@@ -58,13 +53,8 @@ figt <- figt %>% layout(
   xaxis = list(type = 'date',title = "Data"),
   yaxis = list(title = 'Liczba testów'))# testy sumaryczne
 
-#navy 	#000080
-#purple 	#800080
-#maroon 	#800000
 
 
-
-#dzienne dane
 y1=m$tests
 n1=c()
 for( i in 1:length(y1)){
@@ -111,13 +101,9 @@ figc <- plot_ly(
 figc <- figc %>% layout(
   title = " Ogólna liczba zdiagnozowanych przypadków choroby covid19 na przestrzeni dni",
   xaxis = list(type = 'date',title = "Data"),
-  yaxis = list(title = 'Liczba chorych'))#chory sumaryczny pl
+  yaxis = list(title = 'Liczba chorych'))
 
-#navy 	#000080
-#purple 	#800080
-#maroon 	#800000
 
-#dzienne dane
 y2=m$confirmed
 n2=c()
 for( i in 1:length(y2)){
@@ -140,9 +126,8 @@ figc1 <- plot_ly(
 figc1 <- figc1 %>% layout(
   title = "Liczba wykrytych przypadków choroby covid19 na przestrzeni dni",
   xaxis = list(type = 'date',title = "Data"),
-  yaxis = list(title = 'Liczba chorych')) #chory dzien pl
+  yaxis = list(title = 'Liczba chorych')) 
 
-##wyzdrowiaych
 d<-covid19()
 m=d[which(d$id=="POL"),]
 figo <- plot_ly(
@@ -155,9 +140,9 @@ figo <- plot_ly(
 figo <- figo %>% layout(
   title = " Ogólna liczba osób wyzdrowiaych z  choroby covid19 na przestrzeni dni",
   xaxis = list(type = 'date',title = "Data"),
-  yaxis = list(title = 'Liczba ozdrowieńców')) #chory-> zdrowy sumaryczny pl
+  yaxis = list(title = 'Liczba ozdrowieńców')) 
 
-#dzienne dane
+
 y3=m$recovered
 n3=c()
 for( i in 1:length(y3)){
@@ -181,10 +166,10 @@ figo1 <- plot_ly(
 figo1 <- figo1 %>% layout(
   title = "Liczba wyzdowiaych osób z choroby covid19 na przestrzeni dni",
   xaxis = list(type = 'date',title = "Data"),
-  yaxis = list(title = 'Liczba ozdrowieńcóW')) # chory->zdrowy dzien pl
+  yaxis = list(title = 'Liczba ozdrowieńcóW')) 
 
 
- ## procent pozytywnych wynik?w test?w
+
 y1=m$tests
 n1=c()
 for( i in 1:length(y1)){
@@ -226,7 +211,7 @@ for (i in 1:length(n2)){
     np[i]=(n2[i]*100)/n1[i]
   }
 }
-##########################################             ANALIZA 3: PROCENTOWO NA DZIEN
+
 fig1 <- plot_ly(
   type = "bar",
   marker= list(
