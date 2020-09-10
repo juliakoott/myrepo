@@ -2,20 +2,7 @@ library(COVID19)
 library(plotly)
 d<-covid19()
 data<-unique(d$date)
-# zgony<-c(rep(0,length(data)))
-# chorzy<-c(rep(0,length(data)))
-# ozdrowiency<-c(rep(0,length(data)))
-# for (i in 1: length(data) ){
-#   for (j in 1: length(d$date)){
-#     if (data[i]==d$date[j]){
-#       zgony[i]=zgony[i]+d$deaths[j]
-#       chorzy[i]=chorzy[i]+d$confirmed[j]
-#       ozdrowiency[i]=ozdrowiency[i]+d$recovered[j]
-#     }
-#   }
-# }
 
-#########
 data<-unique(d$date)
 z<-c(rep(0,length(data)))#zgony
 ch<-c(rep(0,length(data))) #chorzy
@@ -25,7 +12,7 @@ dd=matrix(nrow=length(data),ncol=196)
 for(i in 1:length(data)){
   dd[i,]<-which(data[i]==d$date)
 }
-#rzedy czyli [i,] to dni
+
 
 for (i in 1: length(data) ){
  z[i]<-sum(d$deaths[dd[i,]])
@@ -139,8 +126,7 @@ figoss1 <- figoss1 %>% layout(
   title = "Liczba osób wyzdrowialych z  choroby covid19 na przestrzeni dni",
   xaxis = list(type = 'date',title = "Data"),
   yaxis = list(title = 'Liczba ozdrowienców'))
- ###
-#gdyby byla potrzebna liczba zbiorczej, do banerku ktory Ci sie podobal
+
 mz=max(z) # ilosc zgonow
 mo=max(o)# ilosc wyzdrowialych
 mch=max(ch) #ilosc chorych
